@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    main_function.cpp
+    main_function.cpp \
+    test.cpp
 
 HEADERS += \
-    main_function.h
+    main_function.h \
+    test.h
 
 FORMS += \
     main_function.ui
