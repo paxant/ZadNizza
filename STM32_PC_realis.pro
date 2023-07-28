@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,12 +10,10 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    main_function.cpp \
-    test.cpp
+    main_function.cpp
 
 HEADERS += \
-    main_function.h \
-    test.h
+    main_function.h
 
 FORMS += \
     main_function.ui
