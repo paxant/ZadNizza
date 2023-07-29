@@ -15,7 +15,7 @@
 
 /*
 DATA_STRING_COM_PORTS[] названия портов
-NUMB_PORTS их количество
+NUMB_PORTS их количество1
 */
 
 using namespace std;
