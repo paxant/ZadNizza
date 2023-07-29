@@ -15,6 +15,9 @@ public:
     Main_function(QWidget *parent = nullptr);
     ~Main_function();
 
+private slots:
+    void on_action_17_triggered();
+
 private:
     Ui::Main_function *ui;
 };

@@ -92,16 +92,23 @@ Main_function::Main_function(QWidget *parent)
 
 QString PORT_NAME;
     ui->setupUi(this);
+    ui->OUTPIUT_CONSOLE->deleteLater();
+    ui->ENTERING->deleteLater();
+    ui->ENTERING_COMMANDS->deleteLater();
+    ui->COM_PORT_CHOICE->deleteLater();
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
     {
        PORT_NAME = info.portName();
     }
     switch (Definitions_device_availability()) {
     case true:
-        ui->Definitions_device_availability->deleteLater();
+        ui->DONT_WORK->deleteLater();
         break;
     default:
-        ui->Definitions_device_availability->setStyleSheet("QTextEdit { background-color: rgb(255, 0, 0) }");
+        ui->DONT_WORK->setAlignment(Qt::AlignCenter);
+        QPalette pal;
+        pal.setColor(QPalette::Base, Qt::red);
+        ui->DONT_WORK->setPalette(pal);
         break;
     }
 
@@ -111,6 +118,12 @@ Main_function::~Main_function()
 {
 
     delete ui;
+
+}
+
+
+void Main_function::on_action_17_triggered()
+{
 
 }
 
