@@ -5,17 +5,17 @@
 #include "QProcess"
 #include "QDebug"
 
-#define BASH false
+#define BASH true
 
 QSerialPort serial_port_variable;
 
 bool Definitions_device_availability()
 {
-#if BASH
-    QProcess process; //Dont work
-    process.start("bash", QStringList() << "-c" << "source" << "./COM_PORT_SCAN.sh");
-    qDebug() << process.readAllStandardError();
-    qDebug() << process.readAllStandardOutput();
+#if BASH //work
+    QProcess PROCESS_BASH;
+    QString BASH_COMMAND = "../STM32_PC_realis/COM_PORT_SCAN.sh";
+    PROCESS_BASH.start(BASH_COMMAND);
+    PROCESS_BASH.waitForFinished();
 #else
      qDebug() << "BASH off" ;
 #endif
