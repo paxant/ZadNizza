@@ -10,12 +10,12 @@
 #include "string"
 #include "vector"
 
-#define BASH true
+#define BASH false
 #define DEBUG true
 
 /*
 DATA_STRING_COM_PORTS[] названия портов
-NUMB_PORTS их количество1
+NUMB_PORTS их количество
 */
 
 using namespace std;
@@ -23,15 +23,17 @@ QSerialPort serial_port_variable;
 
 bool Definitions_device_availability()
 {
+    string DATA_STRING_COM_PORTS[100];
+    int NUMB_PORTS = 0;
 #if BASH //work
     //variables
     QProcess PROCESS_BASH;
     QString DATA_STRING_COM_PORTS_FILE = "";
-    string DATA_STRING_COM_PORTS[100];
-    int NUMB_PORTS = 0;
+
+    //code
     for(int i = 0; i < 100; i++)
         DATA_STRING_COM_PORTS[i] = "";
-    //code
+
 #if DEBUG
     qDebug() << "BASH ENEBLE" ;
 #endif
@@ -65,13 +67,19 @@ bool Definitions_device_availability()
             }
 #if DEBUG
       qDebug() << DATA_STRING_COM_PORTS;
-
 #endif
-
     }
 #else
-     qDebug() << "BASH OFF" ;
-     qDebug() << DATA_STRING_COM_PORTS;
+#if DEBUG
+     qDebug() << "BASH OFF";
+#endif
+     //code
+     for (QSerialPortInfo port : QSerialPortInfo::availablePorts())
+     {
+         // print the port name
+         DATA_STRING_COM_PORTS[NUMB_PORTS] = port.portName().toStdString();
+         NUMB_PORTS++;
+     }
 #endif
     return false;
 
