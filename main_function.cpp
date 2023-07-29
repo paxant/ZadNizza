@@ -92,10 +92,10 @@ Main_function::Main_function(QWidget *parent)
 
 QString PORT_NAME;
     ui->setupUi(this);
-    ui->OUTPIUT_CONSOLE->deleteLater();
-    ui->ENTERING->deleteLater();
-    ui->ENTERING_COMMANDS->deleteLater();
-    ui->COM_PORT_CHOICE->deleteLater();
+    ui->OUTPIUT_CONSOLE->hide();
+    ui->ENTERING->hide();
+    ui->ENTERING_COMMANDS->hide();
+    ui->COM_PORT_CHOICE->hide();
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
     {
        PORT_NAME = info.portName();
@@ -124,6 +124,14 @@ Main_function::~Main_function()
 
 void Main_function::on_action_17_triggered()
 {
-
+    ui->OUTPIUT_CONSOLE->show();
+    ui->ENTERING->show();
+    ui->ENTERING_COMMANDS->show();
+    ui->COM_PORT_CHOICE->show();
 }
 
+
+void Main_function::on_action_10_triggered()
+{
+    exit(0);
+}
