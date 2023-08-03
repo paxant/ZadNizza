@@ -39,7 +39,37 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="2">
+    <item row="3" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QComboBox" name="COM_PORT_CHOICE">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="CONNECT">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Подключиться</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="1">
      <widget class="QTextEdit" name="ENTERING_COMMANDS">
       <property name="enabled">
        <bool>true</bool>
@@ -65,33 +95,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </property>
      </widget>
     </item>
-    <item row="3" column="2">
-     <widget class="QPushButton" name="ENTERING">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Enter</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="4" column="2">
-     <widget class="QComboBox" name="COM_PORT_CHOICE"/>
-    </item>
-    <item row="0" column="2" rowspan="2">
+    <item row="0" column="1">
      <widget class="QTextEdit" name="OUTPIUT_CONSOLE">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -125,7 +129,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </property>
      </widget>
     </item>
-    <item row="0" column="0" rowspan="5" colspan="2">
+    <item row="2" column="1">
+     <widget class="QPushButton" name="ENTERING">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Enter</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="4">
      <widget class="QLineEdit" name="DONT_WORK">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">

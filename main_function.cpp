@@ -21,7 +21,7 @@ NUMB_PORTS их количество
 using namespace std;
 QSerialPort serial_port_variable;
 
-bool Definitions_device_availability()
+bool Definitions_device_availability_bool()
 {
     string DATA_STRING_COM_PORTS[100];
     int NUMB_PORTS = 0;
@@ -85,6 +85,19 @@ bool Definitions_device_availability()
 
 }
 
+void Definitions_device_availability_void(string(&DATA_STRING_COM_PORTS)[], int& NUMB_PORTS)
+{
+
+     //code
+     for (QSerialPortInfo port : QSerialPortInfo::availablePorts())
+     {
+         // print the port name
+         DATA_STRING_COM_PORTS[NUMB_PORTS] = port.portName().toStdString();
+         NUMB_PORTS++;
+     }
+
+}
+
 Main_function::Main_function(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Main_function)
@@ -96,11 +109,12 @@ QString PORT_NAME;
     ui->ENTERING->hide();
     ui->ENTERING_COMMANDS->hide();
     ui->COM_PORT_CHOICE->hide();
+    ui->CONNECT->hide();
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
     {
        PORT_NAME = info.portName();
     }
-    switch (Definitions_device_availability()) {
+    switch (Definitions_device_availability_bool()) {
     case true:
         ui->DONT_WORK->deleteLater();
         break;
@@ -121,6 +135,14 @@ Main_function::~Main_function()
 
 }
 
+void Main_function::COM_PORT_CHOICE_UPDATE() //Переписать на проверку отсутствия в списке combobox или наличию лишнего
+{
+    string DATA_STRING_COM_PORTS[100];
+    int NUMB_PORTS = 0;
+    Definitions_device_availability_void(DATA_STRING_COM_PORTS, NUMB_PORTS);
+    for(int i = 0; i < NUMB_PORTS; i++)
+        ui->COM_PORT_CHOICE->addItem(QString::fromStdString(DATA_STRING_COM_PORTS[i]));
+}
 
 void Main_function::on_action_17_triggered()
 {
@@ -128,6 +150,10 @@ void Main_function::on_action_17_triggered()
     ui->ENTERING->show();
     ui->ENTERING_COMMANDS->show();
     ui->COM_PORT_CHOICE->show();
+    ui->CONNECT->show();
+    ui->COM_PORT_CHOICE->clear();
+    ui->COM_PORT_CHOICE->addItem("Порт не выбран");
+    COM_PORT_CHOICE_UPDATE();
 }
 
 
@@ -135,3 +161,8 @@ void Main_function::on_action_10_triggered()
 {
     exit(0);
 }
+void Main_function::on_COM_PORT_CHOICE_activated(int index)
+{
+  COM_PORT_CHOICE_UPDATE();
+}
+

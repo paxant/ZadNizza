@@ -16,9 +16,12 @@ public:
     ~Main_function();
 
 private slots:
+    void COM_PORT_CHOICE_UPDATE();
     void on_action_17_triggered();
 
     void on_action_10_triggered();
+
+    void on_COM_PORT_CHOICE_activated(int index);
 
 private:
     Ui::Main_function *ui;
