@@ -138,10 +138,28 @@ Main_function::~Main_function()
 void Main_function::COM_PORT_CHOICE_UPDATE() //Переписать на проверку отсутствия в списке combobox или наличию лишнего
 {
     string DATA_STRING_COM_PORTS[100];
+    QStringList itemsInComboBox;
     int NUMB_PORTS = 0;
+
+    Definitions_device_availability_void(DATA_STRING_COM_PORTS, NUMB_PORTS);
+
+    for (int index = 0; index < ui->COM_PORT_CHOICE->count(); index++)
+        itemsInComboBox << ui->COM_PORT_CHOICE->itemText(index);
+    qDebug() << itemsInComboBox[0];
+        for(int i = 0; i < NUMB_PORTS; i++)
+            ui->COM_PORT_CHOICE->addItem(QString::fromStdString(DATA_STRING_COM_PORTS[i]));
+}
+
+ void Main_function::COM_PORT_CHOICE_UPDATE(QString CURRENT_CHOICE)
+{
+    string DATA_STRING_COM_PORTS[100];
+    int NUMB_PORTS = 0;
+    ui->COM_PORT_CHOICE->clear();
+    ui->COM_PORT_CHOICE->addItem("Порт не выбран");
     Definitions_device_availability_void(DATA_STRING_COM_PORTS, NUMB_PORTS);
     for(int i = 0; i < NUMB_PORTS; i++)
         ui->COM_PORT_CHOICE->addItem(QString::fromStdString(DATA_STRING_COM_PORTS[i]));
+    ui->COM_PORT_CHOICE->setCurrentText(CURRENT_CHOICE);
 }
 
 void Main_function::on_action_17_triggered()
@@ -163,6 +181,7 @@ void Main_function::on_action_10_triggered()
 }
 void Main_function::on_COM_PORT_CHOICE_activated(int index)
 {
-  COM_PORT_CHOICE_UPDATE();
+  QString CURRENT_CHOICE = ui->COM_PORT_CHOICE->currentText();
+  COM_PORT_CHOICE_UPDATE(CURRENT_CHOICE);
 }
 

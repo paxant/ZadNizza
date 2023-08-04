@@ -17,6 +17,9 @@ public:
 
 private slots:
     void COM_PORT_CHOICE_UPDATE();
+
+    void COM_PORT_CHOICE_UPDATE(QString CURRENT_CHOICE);
+
     void on_action_17_triggered();
 
     void on_action_10_triggered();
