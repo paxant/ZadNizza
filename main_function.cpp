@@ -9,6 +9,8 @@
 #include <QString>
 #include "string"
 #include "vector"
+#include "QMessageBox"
+#include "QTimer"
 
 #define BASH false
 #define DEBUG true
@@ -20,6 +22,8 @@ NUMB_PORTS их количество
 
 using namespace std;
 QSerialPort serial_port_variable;
+bool TERMINAL_ENABLE = false;
+
 
 bool Definitions_device_availability_bool()
 {
@@ -56,6 +60,8 @@ bool Definitions_device_availability_bool()
                     i++;
                     NUMB++;
                 }
+            }
+
                 DATA_STRING_COM_PORTS[NUMB] += FILE_DATA[i];
             }
             while(true)
@@ -81,8 +87,24 @@ bool Definitions_device_availability_bool()
          NUMB_PORTS++;
      }
 #endif
-    return false;
+    return true;
 
+}
+
+bool Main_function::Setting_the_permission_to_work_with_the_COM_port_bool(bool CONSOLE_OUTPUT = false)
+{
+    if(!serial_port_variable.open(QIODevice::ReadWrite))  // Проверка подключения на чтение и запись
+    {
+        if(CONSOLE_OUTPUT)
+        ui->OUTPIUT_CONSOLE->setText("Ошибка подключения");
+        return false;
+    }
+    else
+    {
+        if(CONSOLE_OUTPUT)
+        ui->OUTPIUT_CONSOLE->setText("Соединение установлено");
+        return true;
+    }
 }
 
 void Definitions_device_availability_void(string(&DATA_STRING_COM_PORTS)[], int& NUMB_PORTS)
@@ -125,7 +147,22 @@ QString PORT_NAME;
         ui->DONT_WORK->setPalette(pal);
         break;
     }
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(Read_COM_port_to_CONSOLE_OUTPUT()));
+    timer->start(300);
 
+}
+
+void Main_function::Read_COM_port_to_CONSOLE_OUTPUT()
+{
+    if(TERMINAL_ENABLE)
+    {
+        QByteArray data;  // специальный тип QT для хранения последовательности байтов
+        data = serial_port_variable.readAll();
+        QString stroka = QString::fromStdString(data.toStdString());
+        if(stroka != "")
+        ui->OUTPIUT_CONSOLE->append(stroka);
+    }
 }
 
 Main_function::~Main_function()
@@ -164,6 +201,7 @@ void Main_function::COM_PORT_CHOICE_UPDATE() //Переписать на про�
 
 void Main_function::on_action_17_triggered()
 {
+    TERMINAL_ENABLE = true;
     ui->OUTPIUT_CONSOLE->show();
     ui->ENTERING->show();
     ui->ENTERING_COMMANDS->show();
@@ -179,9 +217,41 @@ void Main_function::on_action_10_triggered()
 {
     exit(0);
 }
+
 void Main_function::on_COM_PORT_CHOICE_activated(int index)
 {
   QString CURRENT_CHOICE = ui->COM_PORT_CHOICE->currentText();
   COM_PORT_CHOICE_UPDATE(CURRENT_CHOICE);
 }
+
+bool click = false;
+void Main_function::on_CONNECT_clicked()
+{
+    if(click)
+    {
+        serial_port_variable.close();
+        ui->CONNECT->setText("Подключиться");
+        click = false;
+    }
+    else
+    {
+        serial_port_variable.setPortName(ui->COM_PORT_CHOICE->currentText());
+        serial_port_variable.setBaudRate(QSerialPort::Baud115200);   // Значение по умолчанию, не важно при передачи данных по USB для STM32
+        ui->CONNECT->setText("Отключиться");
+        click = true;
+#if DEBUG
+      qDebug() << Setting_the_permission_to_work_with_the_COM_port_bool(true);
+#endif
+    }
+
+}
+
+
+void Main_function::on_ENTERING_clicked()
+{
+    serial_port_variable.write(QByteArray::fromStdString(ui->ENTERING_COMMANDS->toPlainText().toStdString()));
+    serial_port_variable.waitForBytesWritten();
+    ui->ENTERING_COMMANDS->clear();
+}
+
 
